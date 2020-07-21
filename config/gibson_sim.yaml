@@ -6,7 +6,7 @@ build_graph: true
 
 # robot
 
-robot: Mushr
+robot: Turtlebot
 racecar_version: racecar-uw-nano
 racecar_color: 
 
@@ -50,7 +50,7 @@ output: [nonviz_sensor, rgb, depth, scan]
 image_width: 1024
 image_height: 1024
 
-laser_link_name: laser_link
+#laser_link_name: laser_link
 laser_angular_range: 360
 n_horizontal_rays: 540
 
