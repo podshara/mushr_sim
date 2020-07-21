@@ -21,7 +21,7 @@
             <arg name="racecar_version" value="racecar-uw-nano" />
             <!-- The colors of the racecar, should be of the form "-<platform_color>-<inset_color>" -->
             <!-- An empty string will result in the default URDF -->
-              <!-- Check CMakeLists.txt of mushr_description for appropriate values -->
+            <!-- Check CMakeLists.txt of mushr_description for appropriate values -->
             <arg name="racecar_color" value="" />
 
             <arg name="car_name" value="$(arg car_name)" />
