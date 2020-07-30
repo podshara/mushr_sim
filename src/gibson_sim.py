@@ -40,8 +40,8 @@ class SimNode:
         self.depth_raw_pub = rospy.Publisher("/gibson_ros/camera/depth/image_raw",
                                              ImageMsg,
                                              queue_size=10)
-        self.odom_pub = rospy.Publisher("/odom", Odometry, queue_size=10)
-        self.gt_odom_pub = rospy.Publisher("/ground_truth_odom", Odometry, queue_size=10)
+        #self.odom_pub = rospy.Publisher("/odom", Odometry, queue_size=10)
+        #self.gt_odom_pub = rospy.Publisher("/ground_truth_odom", Odometry, queue_size=10)
 
         self.camera_info_pub = rospy.Publisher("/gibson_ros/camera/depth/camera_info",
                                                CameraInfo,
