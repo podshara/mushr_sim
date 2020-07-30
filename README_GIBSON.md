@@ -32,7 +32,7 @@ Unintalling iGibson using `pip uninstall gibson2` \
 ## Running the Simulator
 To start the iGibson sim run:
 ```
-roslaunch mushr_sim gibson.launch
+roslaunch mushr_sim gibson_sim.launch
 ```
 And in another termianl window launch rviz:
 ```
