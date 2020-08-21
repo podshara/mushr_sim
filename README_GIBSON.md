@@ -12,7 +12,7 @@ The MuSHR is the integration between MuSHR simulator and iGibson environment. Un
 
 ### Install from source
 ```
-git clone git@github.com:podshara/iGibson.git
+git clone git@github.com:podshara/iGibson.git --recursive
 cd iGibson
 pip install -e .
 ```
