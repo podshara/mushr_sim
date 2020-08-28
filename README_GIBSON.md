@@ -30,17 +30,24 @@ python -m gibson2.utils.assets_utils --download_dataset URL
 Unintalling iGibson using `pip uninstall gibson2` \
 
 ## Running the Simulator
+```
+roslaunch mushr_sim gibson_sim.launch model_id:=gibson_environment_name map:=your/costmap/topic
+```
+
+* Note that setting model_id in the argument will overwrite the setting in the [configuration file](#Mushr-iGibson-API)
+#### Example
+
 To start the iGibson sim run:
 ```
-roslaunch mushr_sim gibson_sim.launch
+roslaunch mushr_sim gibson_sim.launch model_id:=Rs map:=`rospack find mushr_sim`/maps/Rs.yaml
 ```
 And in another termianl window launch rviz:
 ```
 rviz
 ```
-## Mushr iGbson API
+## Mushr iGibson API 
 Simulator params can be set in `mushr_sim/config/gibson_sim.yaml` [See Example](http://svl.stanford.edu/igibson/docs/environments.html)
-* In addition to stardard MuSHR simulator
+
 #### Publisher
 
 Topic | Type | Description
