@@ -1,18 +1,21 @@
 <launch>
-    <param name="robot/name" value="$(optenv ROBOT mushr)"/>
-    <param name="robot/type" value="mushr"/>
+    <!--param name="robot/name" value="$(optenv ROBOT mushr)"/>
+    <param name="robot/type" value="mushr"/-->
     <arg name="racecar_version" value="racecar-uw-nano" />
     <arg name="racecar_color" value="" />
+    <arg name="model_id" default="" />
+    <arg name="map_path" default="$(find mushr_sim)/maps/" />
 
     <include file="$(find mushr_sim)/launch/teleop.launch">
+        <arg name="map" value="$(arg map_path)/$(arg model_id).yaml" />
     </include>
 
+    <param name="model_id" value="$(arg model_id)" />
     <param name="robot_description"
          textfile="$(find mushr_description)/robots/$(arg racecar_version)$(arg racecar_color).urdf"/>
 
     <node name="mushr_gibson_sim" pkg="mushr_sim" type="gibson_sim.py" output="screen">
     </node>
-
     <node pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" name="depthimage_to_laserscan"  output="screen">
         <param name="scan_height" value="2"/>
         <param name="output_frame_id" value="/car/camera_depth_frame"/>

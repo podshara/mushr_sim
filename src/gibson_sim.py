@@ -24,9 +24,6 @@ class SimNode:
         path = rospack.get_path('mushr_sim')
         config_filename = os.path.join(path, 'config/gibson_sim.yaml')
 
-        #self.config = parse_config(config_filename)
-        #self.position = self.config['initial_pos']
-        #self.orientation = angle_to_quaternion(self.config['initial_orn'][2])
         self.position = [0.0, 0.0, 0.0]
         self.orientation = [0.0, 0.0, 0.0, 1.0]
 
@@ -40,8 +37,6 @@ class SimNode:
         self.depth_raw_pub = rospy.Publisher("/gibson_ros/camera/depth/image_raw",
                                              ImageMsg,
                                              queue_size=10)
-        #self.odom_pub = rospy.Publisher("/odom", Odometry, queue_size=10)
-        #self.gt_odom_pub = rospy.Publisher("/ground_truth_odom", Odometry, queue_size=10)
 
         self.camera_info_pub = rospy.Publisher("/gibson_ros/camera/depth/camera_info",
                                                CameraInfo,
@@ -49,10 +44,16 @@ class SimNode:
         self.bridge = CvBridge()
         self.br = tf.TransformBroadcaster()
 
-        self.env = NavigateEnv(config_file=config_filename,
-                               mode='headless',
-                               action_timestep=1 / 30.0)    # assume a 30Hz simulation
-        print(self.env.config)
+        model_id = rospy.get_param("model_id")
+        if model_id:
+            self.env = NavigateEnv(config_file=config_filename,
+                                mode='headless',
+                                model_id=model_id,
+                                action_timestep=1 / 30.0)    # assume a 30Hz simulation
+        else: 
+            self.env = NavigateEnv(config_file=config_filename,
+                                mode='headless',
+                                action_timestep=1 / 30.0) 
 
         obs = self.env.reset()
         rospy.Subscriber("/car/car_pose", PoseStamped, self.tp_robot_callback)
@@ -93,8 +94,6 @@ class SimNode:
             msg.header.frame_id = "/car/camera_depth_frame" #camera_depth_optical_frame
             self.camera_info_pub.publish(msg)
 
-            #if ((self.tp_time is None) or ((self.tp_time is not None) and
-            #                               ((rospy.Time.now() - self.tp_time).to_sec() > 1.))):
             lidar_points = obs['scan']
             points = np.array(lidar_points).tolist()
             lidar_header = Header()
@@ -104,7 +103,6 @@ class SimNode:
             self.lidar_pub.publish(lidar_message)
 
     def tp_robot_callback(self, data):
-        #rospy.loginfo('Teleporting robot')
         position = [round(data.pose.position.x, 5), round(data.pose.position.y, 5), round(data.pose.position.z, 5)]
         orientation = [
             data.pose.orientation.x, data.pose.orientation.y, data.pose.orientation.z,
@@ -112,9 +110,7 @@ class SimNode:
         ]
         self.position = position
         self.orientation = orientation
-        #print(self.env.robots)
-        #self.env.robots[0].set_position_orientation(position, orientation)
-        #self.tp_time = rospy.Time.now()
+        self.env.robots[0].set_position_orientation(position, orientation)
 
 
 if __name__ == '__main__':
