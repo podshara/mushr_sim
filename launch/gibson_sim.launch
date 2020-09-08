@@ -1,14 +1,29 @@
 <launch>
     <!--param name="robot/name" value="$(optenv ROBOT mushr)"/>
     <param name="robot/type" value="mushr"/-->
-    <arg name="racecar_version" value="racecar-uw-nano" />
-    <arg name="racecar_color" value="" />
+    <arg name="racecar_version" default="racecar-uw-nano" />
+    <arg name="racecar_color" default="" />
     <arg name="model_id" default="" />
-    <arg name="map" default="$(find mushr_sim)/maps/" />
+    <arg name="map_dir" default="$(find mushr_sim)/maps/" />
 
-    <include file="$(find mushr_sim)/launch/teleop.launch">
-        <arg name="map" value="$(arg map)" />
-    </include>
+    <param name="/map_dir" value="$(arg map_dir)" />
+
+    <group if='$(eval arg("model_id") != "")'>
+        <include file="$(find mushr_sim)/launch/teleop.launch">
+            <arg name="map" value="$(arg map_dir)/$(arg model_id).yaml" />
+        </include>
+        <param name="/model_id" value="$(arg model_id)" />
+    </group>
+
+    <group if='$(eval arg("model_id") == "")'>
+        <rosparam command="load" file="$(find mushr_sim)/config/gibson_sim.yaml" />
+        <node pkg="map_server" name="map_server" type="map_server" launch-prefix="/bin/bash -c '$* `rosparam get map_dir`/`rosparam get model_id`.yaml' --" />
+
+        <include file="$(find mushr_sim)/launch/teleop.launch">
+            <arg name="map_server" value= "0" />
+            <arg name="map" value="$(arg map_dir)/$(arg model_id).yaml" />
+        </include>
+    </group>
 
     <param name="robot_description"
          textfile="$(find mushr_description)/robots/$(arg racecar_version)$(arg racecar_color).urdf"/>
@@ -32,5 +47,4 @@
         <remap from="rgb/image_rect_color" to="/gibson_ros/camera/rgb/image"/>
         <remap from="rgb/camera_info" to="/gibson_ros/camera/depth/camera_info"/>
     </node>
-
 </launch>

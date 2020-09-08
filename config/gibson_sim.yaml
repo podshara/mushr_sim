@@ -1,14 +1,14 @@
 # scene
 
 scene: building
-model_id: Rs
+model_id: gates
 build_graph: true
 
 # robot
 
 robot: Turtlebot
-racecar_version: racecar-uw-nano
-racecar_color: 
+# racecar_version: racecar-uw-nano
+# racecar_color: blue
 
 # task, observation and action
 task: pointgoal # pointgoal|objectgoal|areagoal
