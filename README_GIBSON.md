@@ -31,15 +31,15 @@ Unintalling iGibson using `pip uninstall gibson2` \
 
 ## Running the Simulator
 ```
-roslaunch mushr_sim gibson_sim.launch model_id:=gibson_environment_name map:=your/costmap/topic
+roslaunch mushr_sim gibson_sim.launch model_id:=gibson_environment_name map_dir:=your/costmap/topic/directory
 ```
-
+* The simulator will use the cost map with the same name as the model_id in the map_dir
 * Note that setting model_id in the argument will overwrite the setting in the [configuration file](#Mushr-iGibson-API)
 #### Example
 
 To start the iGibson sim run:
 ```
-roslaunch mushr_sim gibson_sim.launch model_id:=Rs map:=`rospack find mushr_sim`/maps/Rs.yaml
+roslaunch mushr_sim gibson_sim.launch model_id:=Rs map:=`rospack find mushr_sim`/maps/
 ```
 And in another termianl window launch rviz:
 ```
